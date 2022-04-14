@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tim-proxy.fullname" . }}
+  labels:
+    {{- include "tim-proxy.labels" . | nindent 4 }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: proxy.trp-timedge.private
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      protocol: TCP
+      targetPort: 3001
+      name: proxy
+      nodePort: {{ .Values.service.nodePort }}
+  selector:
+    {{- include "tim-proxy.selectorLabels" . | nindent 4 }}

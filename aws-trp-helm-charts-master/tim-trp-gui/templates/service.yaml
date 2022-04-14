@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tim-trp-gui.fullname" . }}
+  labels:
+    {{- include "tim-trp-gui.labels" . | nindent 4 }}
+  annotations: 
+    external-dns.alpha.kubernetes.io/hostname: tirp-gui.trp-timedge.private
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 80
+      protocol: TCP
+      name: gui
+      nodePort: {{ .Values.service.nodePort }}
+  selector:
+    {{- include "tim-trp-gui.selectorLabels" . | nindent 4 }}
